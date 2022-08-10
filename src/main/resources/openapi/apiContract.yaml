@@ -11,6 +11,11 @@ servers:
 paths:
   /receipes:
     get:
+      parameters:
+        - $ref: '#/components/parameters/pageNumber'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/search'
+
       summary: Returns a paginated list of Receipes.
       operationId: getReceipes
       description: Endpoint to get all the existent receipes on database
@@ -24,6 +29,20 @@ paths:
 
 components:
   schemas:
+    Search:
+      title: Search
+      type: object
+      properties:
+        servings:
+          type: integer
+        isVegetarian:
+          type: boolean
+        instructions:
+          type: string
+        ingredients:
+          type: string
+        name:
+          type: string
     Receipes:
       title: Receipes
       type: object
@@ -57,11 +76,32 @@ components:
           example: Banana Cake
         servings:
           type: integer
+        isVegetarian:
+          type: boolean
         ingredients:
           type: array
           items:
             type: string
-      # Both properties are required
+      #properties required
       required:
         - id
         - name
+  parameters:
+    search:
+      name: search
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/Search'
+    pageNumber:
+      name: pageNumber
+      in: query
+      required: false
+      schema:
+        type: integer
+    pageSize:
+      name: pageSize
+      in: query
+      required: false
+      schema:
+        type: integer
