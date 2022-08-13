@@ -6,13 +6,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Entity
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor()
+@AllArgsConstructor
 @Table(name = "receipe")
 public class ReceipeEntity {
 
@@ -28,16 +31,32 @@ public class ReceipeEntity {
     private Integer servings;
 
     @Column(name = "ingredients")
-    @ElementCollection
-    @CollectionTable(name = "ingredients_tb", joinColumns = @JoinColumn(name = "id"))
-    private Set<String> ingredients;
+    private String ingredients;
+
+    @Transient
+    private List<String> ingredientsList;
 
     @Column(name = "vegetarian_flag")
     private Boolean isVegetarian;
 
     @Column(name = "instructions")
-    @ElementCollection
-    @CollectionTable(name = "instructions_tb", joinColumns = @JoinColumn(name = "id"))
-    private Set<String> instructions;
+    private String instructions;
+
+    @Transient
+    private List<String> instructionsList;
+
+    @Column(name = "create_time")
+    private LocalDateTime createTime;
+
+    @Column(name = "update_time")
+    private LocalDateTime updateTime;
+
+    public List<String> getIngredientsList() {
+        return Arrays.asList(ingredients.split("\\|")).stream().map(i -> i.trim()).collect(Collectors.toList());
+    }
+
+    public List<String> getInstructionsList() {
+        return Arrays.asList(instructions.split("\\|")).stream().map(i -> i.trim()).collect(Collectors.toList());
+    }
 
 }

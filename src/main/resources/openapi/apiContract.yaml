@@ -26,9 +26,151 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Receipes'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+      tags:
+        - receipe
+    post:
+      summary: Create a new recipe
+      operationId: createRecipe
+      description: Endpoint to create new Recipe
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReceipeInput'
+      responses:
+        '201':
+          description: return an object Recipes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Receipe'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+      tags:
+        - receipe
+  /receipes/{recipeId}:
+    parameters:
+      - $ref: '#/components/parameters/recipeId'
+    delete:
+      summary: Delete recipe by Id
+      operationId: deleteRecipe
+      description: Endpoint to delete a Recipe
+      responses:
+        '204':
+          description: resource deleted successfully
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+      tags:
+        - receipe
+    put:
+      summary: Update recipe by Id
+      operationId: updateRecipe
+      description: Endpoint to update a Recipe by Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReceipeInput'
+      responses:
+        '200':
+          description: resource updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Receipe'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+      tags:
+        - receipe
 
 components:
   schemas:
+    Errors:
+      title: Errors
+      type: object
+      properties:
+        errors:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/Error'
+    Error:
+      title: Error
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        aditionalMessage:
+          type: string
     Search:
       title: Search
       type: object
@@ -82,11 +224,42 @@ components:
           type: array
           items:
             type: string
-      #properties required
-      required:
-        - id
-        - name
+        instructions:
+          type: array
+          items:
+            type: string
+        createTime:
+          type: string
+          format: date-time
+        updateTime:
+          type: string
+          format: date-time
+    ReceipeInput:
+      title: ReceipeInput
+      type: object
+      properties:
+        name:
+          type: string
+          example: Banana Cake
+        servings:
+          type: integer
+        isVegetarian:
+          type: boolean
+        ingredients:
+          type: array
+          items:
+            type: string
+        instructions:
+          type: array
+          items:
+            type: string
   parameters:
+    recipeId:
+      name: recipeId
+      in: path
+      required: true
+      schema:
+        type: integer
     search:
       name: search
       in: query

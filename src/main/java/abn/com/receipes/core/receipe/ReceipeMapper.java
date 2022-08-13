@@ -4,7 +4,6 @@ import com.abn.receipe.models.Receipe;
 import com.abn.receipe.models.Receipes;
 import org.springframework.data.domain.Page;
 
-import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 public class ReceipeMapper extends PageMapper {
@@ -14,7 +13,10 @@ public class ReceipeMapper extends PageMapper {
                 .name(entity.getName())
                 .servings(entity.getServings())
                 .isVegetarian(entity.getIsVegetarian())
-                .ingredients(new ArrayList<>(entity.getIngredients()));
+                .instructions(entity.getInstructionsList())
+                .createTime(entity.getCreateTime())
+                .updateTime(entity.getUpdateTime())
+                .ingredients(entity.getIngredientsList());
     }
 
     public Receipes toReceipes(Page<ReceipeEntity> inputPage){
