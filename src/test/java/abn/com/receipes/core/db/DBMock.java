@@ -1,6 +1,8 @@
 package abn.com.receipes.core.db;
 
 import abn.com.receipes.core.receipe.ReceipeEntity;
+import abn.com.receipes.core.receipe.ReceipeMapper;
+import com.abn.receipe.models.Receipes;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -8,7 +10,13 @@ import java.util.List;
 
 public class DBMock {
 
-    public List<ReceipeEntity> getRecipes() {
+    ReceipeMapper mapper;
+
+    public DBMock(ReceipeMapper mapper) {
+        this.mapper = mapper;
+    }
+
+    public List<ReceipeEntity> listRecipes() {
         ReceipeEntity easyPancakes = new ReceipeEntity();
         easyPancakes.setId(1);
         easyPancakes.setName("Easy pancake test");
@@ -49,6 +57,14 @@ public class DBMock {
         vegetarianFajitas.setCreateTime(LocalDateTime.now());
         vegetarianFajitas.setUpdateTime(LocalDateTime.now());
         return Arrays.asList(easyPancakes, chickenMassala, roastBeef, vegetarianFajitas);
+    }
+
+    public Receipes getReceipes() {
+        Receipes receipes = new Receipes();
+        for (ReceipeEntity entity : listRecipes()) {
+            receipes.addItemsItem(mapper.toApi(entity));
+        }
+        return receipes;
     }
 
 

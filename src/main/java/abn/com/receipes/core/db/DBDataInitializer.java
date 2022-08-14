@@ -1,4 +1,4 @@
-package abn.com.receipes.core.util;
+package abn.com.receipes.core.db;
 
 import abn.com.receipes.core.receipe.ReceipeEntity;
 import abn.com.receipes.core.receipe.ReceipeRepository;
