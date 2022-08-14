@@ -1,7 +1,15 @@
 openapi: 3.0.0
 info:
   title: Receipes API ABN
-  description: This is a test case for ABN, representing an Receipes API where you can add, edit, delete and search for receipes.
+  description: |-
+    This is a test case for ABN, representing an Receipes API where you can add, edit, delete and search for receipes.
+
+    All objects of the application can be found on Schemas tab.
+
+    Check The descriptions inside each endpoint, that will give you more informations.
+
+    **Important: Postman collections to make the requests, are available on repository on github
+
   version: 1.0.0
   contact:
     name: Pedro Ventura
@@ -16,9 +24,9 @@ paths:
         - $ref: '#/components/parameters/pageSize'
         - $ref: '#/components/parameters/search'
 
-      summary: Returns a paginated list of Receipes.
+      summary: Returns list of Recipes.
       operationId: getReceipes
-      description: Endpoint to get all the existent receipes on database
+      description: Endpoint to get all the existent receipes on database. If no value is passed, a paginated list will be returned with all objects. Its also possible to combine values to be passed for the filter. Its important to use the attributes names as it'showed on example bellow. (serving,isVegetarian,instructions,ingredients,name)
       responses:
         '200':
           description: A JSON array of user names
@@ -49,7 +57,7 @@ paths:
     post:
       summary: Create a new recipe
       operationId: createRecipe
-      description: Endpoint to create new Recipe
+      description: Endpoint to create new Recipe. The request body have all attributes mandatory. If anyone of them is not filled, a exception will be throwed.
       requestBody:
         required: true
         content:
@@ -89,7 +97,7 @@ paths:
     delete:
       summary: Delete recipe by Id
       operationId: deleteRecipe
-      description: Endpoint to delete a Recipe
+      description: Endpoint to delete a Recipe, will receive and recipeId. If no Id is found, will throw a not found exception.
       responses:
         '204':
           description: resource deleted successfully
@@ -116,7 +124,7 @@ paths:
     put:
       summary: Update recipe by Id
       operationId: updateRecipe
-      description: Endpoint to update a Recipe by Id
+      description: Endpoint to update a Recipe by Id. It will receive as parameter an ReceipeInput object as requestBody. The attributes that are passed null, will not be updated (the old value will be keeped)
       requestBody:
         content:
           application/json:
@@ -177,14 +185,19 @@ components:
       properties:
         servings:
           type: integer
+          example: 10
         isVegetarian:
           type: boolean
+          example: true
         instructions:
           type: string
+          example: shake it
         ingredients:
           type: string
+          example: 600g beef
         name:
           type: string
+          example: Beef at oven
     Receipes:
       title: Receipes
       type: object
