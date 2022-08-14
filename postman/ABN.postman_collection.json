@@ -1,0 +1,157 @@
+{
+	"info": {
+		"_postman_id": "a7848ca2-42cb-4ce1-addc-4c91374c7b79",
+		"name": "ABN",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "getReceipes",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/receipes?ingredients=beef",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"receipes"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "ss",
+							"disabled": true
+						},
+						{
+							"key": "instructions",
+							"value": "instruction34",
+							"disabled": true
+						},
+						{
+							"key": "servings",
+							"value": "6",
+							"disabled": true
+						},
+						{
+							"key": "ingredients",
+							"value": "beef"
+						},
+						{
+							"key": "pageSize",
+							"value": "2",
+							"disabled": true
+						},
+						{
+							"key": "pageNumber",
+							"value": "2",
+							"disabled": true
+						},
+						{
+							"key": "isVegetarian",
+							"value": "true",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createRecipe",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"New Recipe vegetarian\",\r\n    \"servings\":2,\r\n    \"isVegetarian\":true,\r\n    \"ingredients\":[\r\n        \"ingr1\",\r\n        \"ingr2\"\r\n    ],\r\n    \"instructions\":[\r\n        \"inst1\",\r\n        \"inst2\",\r\n        \"inst3\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/receipes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"receipes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteRecipe",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/v1/receipes/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"receipes",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateRecipe",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"new Name\",\r\n    \"servings\":null,\r\n    \"isVegetarian\":null,\r\n    \"ingredients\":[\r\n        \"ingr1\",\r\n        \"ingr2\"\r\n    ],\r\n    \"instructions\":[\r\n        \"instrc1\",\r\n        \"instrct2\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/v1/receipes/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"v1",
+						"receipes",
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

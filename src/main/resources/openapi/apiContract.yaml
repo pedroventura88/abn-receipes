@@ -1,7 +1,15 @@
 openapi: 3.0.0
 info:
   title: Receipes API ABN
-  description: This is a test case for ABN, representing an Receipes API where you can add, edit, delete and search for receipes.
+  description: |-
+    This is a test case for ABN, representing an Receipes API where you can add, edit, delete and search for receipes.
+
+    All objects of the application can be found on Schemas tab.
+
+    Check The descriptions inside each endpoint, that will give you more informations.
+
+    **Important: Postman collections to make the requests, are available on repository on github
+
   version: 1.0.0
   contact:
     name: Pedro Ventura
@@ -11,9 +19,14 @@ servers:
 paths:
   /receipes:
     get:
-      summary: Returns a paginated list of Receipes.
+      parameters:
+        - $ref: '#/components/parameters/pageNumber'
+        - $ref: '#/components/parameters/pageSize'
+        - $ref: '#/components/parameters/search'
+
+      summary: Returns list of Recipes.
       operationId: getReceipes
-      description: Endpoint to get all the existent receipes on database
+      description: Endpoint to get all the existent receipes on database. If no value is passed, a paginated list will be returned with all objects. Its also possible to combine values to be passed for the filter. Its important to use the attributes names as it'showed on example bellow. (serving,isVegetarian,instructions,ingredients,name)
       responses:
         '200':
           description: A JSON array of user names
@@ -21,9 +34,170 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Receipes'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+      tags:
+        - receipe
+    post:
+      summary: Create a new recipe
+      operationId: createRecipe
+      description: Endpoint to create new Recipe. The request body have all attributes mandatory. If anyone of them is not filled, a exception will be throwed.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReceipeInput'
+      responses:
+        '201':
+          description: return an object Recipes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Receipe'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+      tags:
+        - receipe
+  /receipes/{recipeId}:
+    parameters:
+      - $ref: '#/components/parameters/recipeId'
+    delete:
+      summary: Delete recipe by Id
+      operationId: deleteRecipe
+      description: Endpoint to delete a Recipe, will receive and recipeId. If no Id is found, will throw a not found exception.
+      responses:
+        '204':
+          description: resource deleted successfully
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+      tags:
+        - receipe
+    put:
+      summary: Update recipe by Id
+      operationId: updateRecipe
+      description: Endpoint to update a Recipe by Id. It will receive as parameter an ReceipeInput object as requestBody. The attributes that are passed null, will not be updated (the old value will be keeped)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReceipeInput'
+      responses:
+        '200':
+          description: resource updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Receipe'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Errors'
+      tags:
+        - receipe
 
 components:
   schemas:
+    Errors:
+      title: Errors
+      type: object
+      properties:
+        errors:
+          type: array
+          minItems: 1
+          items:
+            $ref: '#/components/schemas/Error'
+    Error:
+      title: Error
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        aditionalMessage:
+          type: string
+    Search:
+      title: Search
+      type: object
+      properties:
+        servings:
+          type: integer
+          example: 10
+        isVegetarian:
+          type: boolean
+          example: true
+        instructions:
+          type: string
+          example: shake it
+        ingredients:
+          type: string
+          example: 600g beef
+        name:
+          type: string
+          example: Beef at oven
     Receipes:
       title: Receipes
       type: object
@@ -57,11 +231,63 @@ components:
           example: Banana Cake
         servings:
           type: integer
+        isVegetarian:
+          type: boolean
         ingredients:
           type: array
           items:
             type: string
-      # Both properties are required
-      required:
-        - id
-        - name
+        instructions:
+          type: array
+          items:
+            type: string
+        createTime:
+          type: string
+          format: date-time
+        updateTime:
+          type: string
+          format: date-time
+    ReceipeInput:
+      title: ReceipeInput
+      type: object
+      properties:
+        name:
+          type: string
+          example: Banana Cake
+        servings:
+          type: integer
+        isVegetarian:
+          type: boolean
+        ingredients:
+          type: array
+          items:
+            type: string
+        instructions:
+          type: array
+          items:
+            type: string
+  parameters:
+    recipeId:
+      name: recipeId
+      in: path
+      required: true
+      schema:
+        type: integer
+    search:
+      name: search
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/Search'
+    pageNumber:
+      name: pageNumber
+      in: query
+      required: false
+      schema:
+        type: integer
+    pageSize:
+      name: pageSize
+      in: query
+      required: false
+      schema:
+        type: integer
