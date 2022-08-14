@@ -17,8 +17,8 @@ That information can be found on class DBDataInitializer.
 ### API Contract
 * The api contract was developed based on OAS3 specifications.
 * The contract of the API endpoints can be found on path resources/openapi/apiContract.yaml
-You can copy content of the apiContract.yaml. After, go to swagger editor page, and pass it: https://editor.swagger.io/.
-Navigate inside the endpoints to check the examples about how to make your request.
+* Copy the content of apiContract.yaml. After, go to swagger editor page, and pass it: https://editor.swagger.io/.
+* Navigate inside the endpoints to check the examples about how to make your request.
 * Postman collections (*ABN.postman_collection.json*) to make the requests, are available at root, on postman directory. 
 
 ### Unit Tests and Integration test
